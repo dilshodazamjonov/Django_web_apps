@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+
+{% block main %}
+<div class="container profile_contain">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <img src="{{ profile.get_avatar }}" alt="Profile Picture" class="rounded-circle" width="150">
+                        <div class="mt-3">
+                            <h4>{{ profile.user.username.capitalize }}</h4>
+
+                            <a type="button" class="btn btn-dark" href="{% url 'change' %}">
+                                Изменить аккаунт
+                            </a>
+                            <a type="button" class="btn btn-dark" href="{% url 'change' %}">
+                                Изменить профиль
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Ф.И.О</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ request.user.first_name }} {{ request.user.last_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Электронная почта</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ request.user.email }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Контактные данные</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ profile.phone }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Регион</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ profile.region }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Адрес</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{ profile.address }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-orders">
+                    {% if items %}
+                    <div class="profile-orders-detail">
+                        <div class="profile__orders ">
+                            <h2 class="profile__title mb-5">Товары последнего заказа</h2>
+
+                            <table class="profile__table">
+                                <tr>
+                                    <td colspan="4">Товар</td>
+                                    <td>Цена</td>
+                                    <td>Количество</td>
+                                    <td>На сумму</td>
+                                </tr>
+
+                                {% for item in items %}
+                                <tr>
+                                    <td colspan="4" class="profile__title-adaptive">
+                                        <div class="tabel__item">
+                                            <img src="{{ item.product.get_first_photo }}" alt="img">
+                                            <span>{{ item.product.title }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="profile__tabel-data">{% get_normal_price item.product.price %}₽</td>
+                                    <td class="profile__tabel-data">{{ item.quantity }}</td>
+                                    <td class="profile__tabel-data">{% get_normal_price item.get_total_price %}₽</td>
+                                </tr>
+                                {% endfor %}
+
+
+                                <!-- Не трогать - это заглушка для корректного отображения таблицы -->
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <!-- Не трогать - это заглушка для корректного отображения таблицы -->
+                            </table>
+                            <p class="profile__orders-link">Сумма заказа: {% get_normal_price order.get_order_total_price %}₽</p>
+                        </div>
+                    </div>
+                        {% else %}
+                        <h2>У вас пока нет заказанных товаров</h2>
+                        {% endif %}
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock main %}
+
+
+{% block email %}
+{% endblock email %}

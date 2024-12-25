@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+
+{% block main %}
+
+<div class="d-flex justify-content-center" style="margin-top: 75px; margin-bottom: 75px;">
+    <div class="col-3 register_shadow">
+        <div class="card p-4">
+            <h4 class="auth_text text-center">{{ title }}</h4>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ login_form.as_p }}
+                <button type="submit" class="submit_btn rounded w-100">
+                    Войти
+                </button>
+                <div class="registration_box">
+                    <span>Нет аккаунта?</span>
+                    <a href="{% url 'register' %}" class="register">Зарегистрируйтесь</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% block email %}
+{% endblock email %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock main %}
+

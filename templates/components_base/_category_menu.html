@@ -1,0 +1,20 @@
+{% load totembo_tags %}
+<div class="menu">
+    <div>
+        <div>
+            <ul>
+                {% get_categories as categories %}
+                {% for category in categories %}
+                <li class="header_nav-item justify-content-center">
+                    <a class="header_nav-link" href="{{ category.get_absolute_url }}">
+                        <img src="{{ category.get_icon.url }}" class="icon-class" width="30px" height="40px" alt="">
+                        <p class="category_text">
+                            {{ category.title }}
+                        </p>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

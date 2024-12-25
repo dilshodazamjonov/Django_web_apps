@@ -1,0 +1,39 @@
+{% load static %}
+{% load totembo_tags %}
+
+<div class="container">
+    <div class="pagination">
+        <ul class="pagination_list">
+            {% if page_obj.previous_page_number and page_obj.paginator.num_pages > 2 %}
+            <a href="?{% query_params page=page_obj.previous_page_number %}">
+                <li class="link">
+                    <img src="{% static 'totembo/images/icons/caret-left-fill.svg' %}" alt="">
+                </li>
+            </a>
+            {% endif %}
+
+            {% for page in page_obj.paginator.page_range %}
+            {% if page == page_obj.number %}
+            <a href="">
+                <li class="link_p" style="background: #162a54; color: white">
+                    {{ page }}
+                </li>
+            </a>
+            {% elif page > page_obj.number|add:-3 and page < page_obj.number|add:+3 %}
+            <a href="?{% query_params page=page %}">
+                <li class="link_p">
+                    {{ page }}
+                </li>
+            </a>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.next_page_number and  page_obj.paginator.num_pages > 2%}
+            <a href="?{% query_params page=page_obj.next_page_number %}">
+                <li class="link">
+                    <img src="{% static 'totembo/images/icons/caret-right-fill.svg' %}" alt="">
+                </li>
+            </a>
+            {% endif %}
+        </ul>
+    </div>
+</div>

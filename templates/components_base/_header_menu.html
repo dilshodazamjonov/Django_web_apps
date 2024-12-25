@@ -1,0 +1,40 @@
+{% load static %}
+<div class="header_items">
+    <form method="GET" action="{% url 'search' %}">
+        <input class="header_panel-item search_item" type="text" name="q" placeholder="Поиск" id="search-input">
+    </form>
+    <script>
+        document.getElementById('search-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                this.form.submit();
+            }
+        });
+    </script>
+    <div class="header_panel">
+        {% if request.user.is_authenticated %}
+        <div class="header_panel-item">
+            <a href="{% url 'my_favorite' %}">
+                <img class="header_icon" src="{% static 'totembo/images/icons/basket_icon.svg' %}" alt=""
+                     title="Избранное">
+            </a>
+        </div>
+        <div class="header_panel-item">
+            <a href="{% url 'my_cart' %}">
+                <img class="header_icon" src="{% static 'totembo/images/icons/bag.svg' %}" alt="" title="Корзина">
+            </a>
+        </div>
+        <div class="header_panel-item">
+            <a href="{% url 'profile' %}">
+                <img class="header_icon" src="{% static 'totembo/images/icons/user_icon.svg' %}" alt="" title="Профиль">
+            </a>
+        </div>
+        {% endif %}
+        <div class="header_panel-item">
+            <a href="{% if not request.user.is_authenticated %}{% url 'login' %}{% else %}{% url 'logout' %}{% endif %}">
+                <img class="circum" src="{% if request.user.is_authenticated %}{% static 'totembo/images/icons/logout.svg' %}
+            {% else %}{% static 'totembo/images/icons/circum_login.svg' %}{% endif %}" alt=""
+                     title="{% if request.user.is_authenticated %} Выход {% else %} Вход {% endif %}">
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+{% load static %}
+{% load totembo_tags %}
+
+<div class="recommended_goods mt-4">
+    <h2 class="product_detail-main-title text-center">Товары со скидками</h2>
+</div>
+<!-- BLOCKS GUARANTEES START -->
+<div class="blocks_img">
+    {% sales_products as sales %}
+    {% for product in sales %}
+    {% include 'totembo/components/_card.html' %}
+    {% endfor %}
+    <div class="discount_section">
+        <div class="arrow_container">
+            <!-- Left Arrow pointing to the products -->
+            <span class="arrow_text">Ознакомьтесь с другими товарами со скидками</span>
+        </div>
+        <div class="discount_link">
+            <a href="{% url 'sales' %}">Смотреть товары со скидками</a>
+        </div>
+    </div>
+</div>

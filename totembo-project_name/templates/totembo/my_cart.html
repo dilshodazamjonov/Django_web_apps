@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+{% block main %}
+
+<main>
+    <div class="container">
+        {% if order_products %}
+        <div class="d-flex justify-content-center">
+            <h1 style="margin-bottom: 50px; margin-top: -10px; ">Ваша корзина</h1>
+        </div>
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="box-element">
+                    <div class="d-flex justify-content-center align-items-center" style="gap: 100px;">
+                        <h5>Количество товаров: <strong>{{ order.get_order_total_quantity }}</strong></h5>
+                        <h5>Общая сумма заказа: <strong>${% get_normal_price order.get_order_total_price %}</strong>
+                        </h5>
+                    </div>
+                    <table class="table">
+
+                    </table>
+                </div>
+
+                {% for item in order_products %}
+                <div class="box-element">
+
+                    <div class="cart-row">
+                        <div style="flex:1"></div>
+                        <div style="flex:1" class="d-flex justify-content-center"><strong>Товар</strong></div>
+                        <div style="flex:1" class="d-flex justify-content-center"><strong>Количество на корзине</strong></div>
+                        <div style="flex:1" class="d-flex justify-content-center"><strong>Цена</strong></div>
+                        <div style="flex:1" class="d-flex justify-content-center"><strong>Скидка на товар</strong></div>
+                        <div style="flex:1" class="d-flex justify-content-center"><strong>Цена после скидки</strong></div>
+                    </div>
+
+
+                    <div class="cart-row align-items-center">
+                        <div class="my_cart_img" style="flex:1">
+                            <a href="{{ item.product.get_absolute_url }}">
+                                <img src="{{ item.product.get_first_photo }}" alt="" class="row-image">
+                            </a>
+                        </div>
+                        <div style="flex:1" class="d-flex justify-content-center">
+                            <a class="my_cart_title" href="{{ item.product.get_absolute_url }}">
+                                <p>{{ item.product.title }}</p>
+                            </a>
+                        </div>
+
+
+                        <div style="flex:1" class="d-flex justify-content-center">
+                            <p class="basket__options-count">
+                                <a href="{% url 'add_product' item.product.slug 'delete' %}" class="plus_cart">-</a>
+                                <span>{{ item.quantity }}</span>
+                                <a href="{% url 'add_product' item.product.slug 'add' %}" class="plus_cart">+</a>
+                            </p>
+                        </div>
+                        <div style="flex:1" class="d-flex justify-content-center">
+                            <p>${% get_normal_price item.product.price %}</p>
+                        </div>
+                        <div style="flex:1" class="d-flex justify-content-center">{% if item.product.discount %}
+                            <p>{{ item.product.discount }}%</p>
+                            {% else %}
+                            <p> - </p>
+                            {% endif %}
+                        </div>
+
+
+                        <div style="flex:1" class="d-flex justify-content-center">
+                            <p>${% get_normal_price item.get_total_price %}</p></div>
+
+                    </div>
+
+
+                </div>
+                {% endfor %}
+                <div class="d-flex justify-content-center" style="gap: 400px;">
+
+                    <a href="{% url 'delete' order.pk %}" class="btn btn-danger rounded">Очитить корзину</a>
+                    <a href="{% url 'checkout' %}" class="btn btn-success rounded">Сделать заказ</a>
+
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center" style="margin-bottom: 50px; margin-top: -10px;">
+                <h1>Ваша корзина пока пуста.</h1>
+                <h1>Пока посмотрите наши новые товары.</h1>
+            </div>
+            {% include 'totembo/components/_recent_products.html' %}
+            {% endif %}
+        </div>
+    </div>
+
+</main>
+
+
+{% endblock main %}
+{% block email %}
+{% endblock email %}

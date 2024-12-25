@@ -1,0 +1,9 @@
+{% load static %}
+
+<div class="product_detail-slider">
+    {% for img in product.images.all|slice:"1:" %}
+    <div class="product_detail-slider_block">
+        <img class="slider_img" src="{{ img.image.url }}" alt="">
+    </div>
+    {% endfor %}
+</div>

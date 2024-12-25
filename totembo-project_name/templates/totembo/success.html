@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+{% block main %}
+
+<main>
+    <div class="success__container">
+        <div class="success-container">
+            <div class="success-icon">✔️</div>
+            <div class="success-title">Оплата прошла успешно</div>
+            <div class="success-message">
+                Спасибо! Ваш платёж был успешно обработан. Не забудьте оставить отзыв на страницах продуктов
+            </div>
+            <a href="{% url 'main' %}" class="button">Перейти на главную</a>
+        </div>
+    </div>
+    {% include 'totembo/components/_sales_products.html' %}
+
+</main>
+
+
+{% endblock main %}
+
+
+{% block email %}
+{% endblock email %}

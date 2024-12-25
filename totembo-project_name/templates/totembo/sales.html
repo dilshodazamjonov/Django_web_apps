@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load totembo_tags %}
+
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+{% block main %}
+<main class="main">
+    <div class="container">
+        <section class="products">
+            <div class="favorite_title">
+                <h2>{{ title }}</h2>
+            </div>
+            {% if products %}
+            <div class="row">
+                <!-- /.products__item -->
+                {% for product in products %}
+                {% include 'totembo/components/_card.html' %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <h3 class="text-center">Пока нет товаров по акциям</h3>
+            {% endif %}
+            <!-- /.products__content -->
+        </section>
+
+    </div>
+
+{% include 'totembo/components/_recent_products.html' %}
+    <!-- /.container -->
+</main>
+{% endblock main %}
+
+
+{% block email %}
+{% endblock email %}

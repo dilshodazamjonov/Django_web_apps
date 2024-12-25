@@ -1,0 +1,19 @@
+<div class="email_form">
+    <div class="email_form-block text-center d-flex w-100 h-100 align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="email_form-title">Станьте частью нас!</h3>
+                    <p class="email_form-desc">Присоединяйтесь, чтобы получать уведомления о скидках, о новых продуктах
+                        и новинках</p>
+                    <form class="d-flex" method="post" action="{% url 'subscribe' %}">
+                        {% csrf_token %}
+                        <input class="email_form-input flex-grow-1" type="email" name="email"
+                               placeholder="Ваш адрес электронной почты..." required>
+                        <button type="submit" class="email_form-link">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

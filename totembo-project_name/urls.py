@@ -1,0 +1,32 @@
+from django.urls import path
+from .views import *
+
+urlpatterns = [
+    path('', ProductListView.as_view(), name='main'),
+    path('product/<slug:slug>/', ProductDetailView.as_view(), name='product'),
+    path('category/<slug:slug>/', ProductByCategory.as_view(), name='category'),
+    path('login/', user_login_view, name='login'),
+    path('logout/', user_logout_view, name='logout'),
+    path('registration/', user_registration_view, name='register'),
+    path('add_favorite/<slug:slug>/', save_favorite_product_view, name='add_favorite'),
+    path('my_favorite/', FavouriteListView.as_view(), name='my_favorite'),
+    path('sales/', SalesProductListView.as_view(), name='sales'),
+    path('add_product/<slug:slug>/<str:action>/', add_product_order, name='add_product'),
+    path('my_cart/', my_cart_view, name='my_cart'),
+    path('delete/<int:pk>/', delete_order_view, name='delete'),
+    path('contact/', contact, name='contact'),
+    path('comment_save/<slug:slug>/', save_comment, name='comment'),
+    path('comment/<int:comment_pk>/<int:product_pk>/delete/', comment_delete, name='comment_delete'),
+    path('edit_comment/', edit_comment, name='comment_edit'),
+    path('checkout/', checkout_view, name='checkout'),
+    path('payment/', create_checkout_session_view, name='payment'),
+    path('success/', success_payment, name='success'),
+    path('search/', product_search, name='search'),
+    path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy_policy'),
+    path('subscribe/', subscribe, name='subscribe'),
+    path('profile', profile_view, name='profile'),
+    path('change/', edit_account_profile_view, name='change'),
+    path('edit_profile/', edit_profile_view, name='edit_profile'),
+    path('edit_account/', edit_account_view, name='edit_account'),
+    path('rate-product/<int:product_id>/', rate_product, name='rate_product'),
+]

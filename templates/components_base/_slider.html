@@ -1,0 +1,19 @@
+{% load static %}
+{% load totembo_tags %}
+<div class="owl-carousel">
+    <div class="owl-carousel_block">
+        <h3 class="owl-carousel_block-title">You may also like this</h3>
+    </div>
+    {% get_categories as categories %}
+    {% for category in categories %}
+    <div class="owl-carousel_block owl-carousel_block-bg">
+
+        <div class="owl-carousel_block-content">
+            <img src="{{ category.get_image.url }}" alt="">
+        </div>
+        <a href="{{ category.get_absolute_url }}" class="owl-carousel_block-hover">
+            <p class="owl-carousel_block-desc">{{ category.title }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>

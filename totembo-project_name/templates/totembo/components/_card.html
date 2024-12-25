@@ -1,0 +1,78 @@
+{% load totembo_tags %}
+{% load static %}
+
+{% if request.user.is_authenticated %}
+{% get_favorites request.user as favorites %}
+{% endif %}
+
+
+<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+    <div class="product_card text-center">
+        <a href="{% url 'add_favorite' product.slug %}"
+           class="products__item-heart active">
+            <svg
+                    class="heart_icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="red"
+                    width="35px"
+                    height="35px">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                      fill="{% if product in favorites %}black{% else %}none{% endif %}"
+                      stroke="black"
+                      stroke-width="1"/>
+            </svg>
+        </a>
+
+
+        {% if product.discount %}
+        <div class="card_discount">
+            <img src="{% static 'totembo/images/icons/Vector.svg' %}" alt="">
+            <span>-{{ product.discount }}%</span>
+        </div>
+        {% endif %}
+
+
+        <a class="product_card-detail" href="{{ product.get_absolute_url }}">
+            <div class="w-100">
+                <img class="product_card-img" src="{{ product.get_first_photo }}" alt="{{ product.title }}">
+            </div>
+            <div class="product_card-description">
+                <p class="product_card-name">{{ product.title }}</p>
+                <p class="product_card-desc">{{ product.category.title }}</p>
+                <div class="product_price">
+                    {% if product.discount %}
+                    <p class="product_card-price discount_price_card">$
+                        {% get_discount_price product.price product.discount %}</p>
+                    <p class="product_card-price old_price_card">$ {% get_normal_price product.price %}</p>
+                    {% else %}
+                    <p class="product_card-price">$ {% get_normal_price product.price %}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </a>
+        <a href="{% url 'add_product' product.slug 'add' %}" class="product_card-btn">
+            Добавить в корзину
+        </a>
+
+        <div class="product_rating">
+            {% if product.average_rating > 0 %}
+            <div class="rating-stars">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                     class="ipc-icon ipc-icon--star {% if forloop.counter <= product.average_rating|floatformat:0 %}filled-star{% else %}empty-star{% endif %}"
+                     viewBox="0 0 24 24" fill="#11415d" role="presentation">
+                    <path d="M12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72 3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19
+                8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                </svg>
+            </div>
+            <p class="average-rating">{{ product.average_rating|floatformat:1 }}
+                ({{ product.ratings.count }}
+                {% if product.ratings.count == 1 %}оценка{% else %}оценок{% endif %})</p>
+            {% else %}
+            <p class="no-rating">Нет оценок</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

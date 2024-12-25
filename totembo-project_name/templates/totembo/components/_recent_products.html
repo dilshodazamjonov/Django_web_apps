@@ -1,0 +1,18 @@
+{% load static %}
+{% load totembo_tags %}
+
+<div class="recommended_goods">
+    <h2 class="product_detail-main-title text-center">Новинки в Totembo</h2>
+
+    <!-- PRODUCTS BLOCK START -->
+    <div class="container">
+        <div class="row">
+            {% get_recent_products as resents %}
+            {% for product in resents %}
+            {% include 'totembo/components/_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    <!-- PRODUCTS BLOCK END -->
+
+</div>

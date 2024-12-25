@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+
+{% block main %}
+
+<main>
+
+    <main>
+        <div class="sales_block">
+            <div class="d-flex text-center">
+                <div class="sales_block-first w-50">
+                    <p>GET <span>20% OFF</span> FOR $200 AND MORE ORDER</p>
+                </div>
+                <div class="sales_block-second w-50">
+                    <p>FREE DELIVERY WORLDWIDE</p>
+                </div>
+            </div>
+        </div>
+
+
+        <section class="category_products">
+            <!-- PRODUCTS FILTER START -->
+            {% include 'totembo/components/_filters.html' %}
+
+            <!-- PRODUCTS FILTER END -->
+
+            <!-- PRODUCTS BLOCK START -->
+            <div class="container">
+                <div class="row">
+                    {% for product in products %}
+                    {% include 'totembo/components/_card.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- PRODUCTS BLOCK END -->
+
+            <!-- PAGINATION START -->
+            {% if products %}
+            {% include 'totembo/components/_pagination.html' %}
+            {% else %}
+            <div class="no_product">
+                <p>Товары по данным параметрам не найдено.</p>
+                {% endif %}
+            </div>
+            <!-- PAGINATION END -->
+        </section>
+    </main>
+
+
+    <!-- SLIDER BLOCK START -->
+
+
+</main>
+
+{% endblock main %}
+
+
+{% block email %}
+{% endblock email %}

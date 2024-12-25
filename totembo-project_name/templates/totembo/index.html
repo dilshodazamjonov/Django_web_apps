@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block main %}
+<main>
+
+
+    {% include 'totembo/components/_sales_products.html' %}
+    {% include 'totembo/components/_best_products.html' %}
+
+
+    <!-- BLOCKS GUARANTEES START -->
+
+    <section class="products-section products_section-watches">
+        <!-- SECTION QUARTZ EDITION START -->
+        <h2 class="main_title text-center">Tissot Edition</h2>
+        <div class="container">
+            <div class="row">
+                {% get_products_tissot as products %}
+                {% for product in products %}
+                {% include 'totembo/components/_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+        <!-- SECTION QUARTZ EDITION END -->
+
+        <!-- SECTION AUTOMATIC EDITION START -->
+        <h2 class="main_title text-center">Casio Edition</h2>
+        <div class="container">
+            <div class="row">
+                {% get_products_casio as products %}
+                {% for product in products %}
+                {% include 'totembo/components/_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+        <!-- SECTION AUTOMATIC EDITION END -->
+    </section>
+
+
+    <!-- SLIDER BLOCK START -->
+
+    {% include 'components_base/_slider.html' %}
+
+    <!-- SLIDER BLOCK END -->
+
+    <!-- BLOCK EMAIL FORM START -->
+
+    <!-- BLOCK EMAIL FORM END -->
+</main>
+{% endblock main %}

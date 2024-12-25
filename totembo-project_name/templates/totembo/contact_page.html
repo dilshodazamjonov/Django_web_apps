@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+{% block main %}
+
+<h4 class="auth_text text-center">{{ title }}</h4>
+<div class="contact_box">
+    <div class="contact_form">
+        <div>
+            <h3>Отправьте сообщение</h3>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ contact_form.as_p }}
+            <div class="contact_btn">
+                <button type="submit">Отправить</button>
+            </div>
+        </form>
+    </div>
+    <div class="contact_info">
+        <h3>Позвоните сейчас</h3>
+        <div class="phone_info">
+            <div>Написать через email: @Info.totembo.com</div>
+            <div>Позвонить: +998 90 999 99 99</div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+{% block email %}
+{% endblock email %}

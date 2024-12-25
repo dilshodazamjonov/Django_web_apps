@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+{% block main %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
+      rel="stylesheet">
+<link href="/static/css/bootstrap-icons.css" rel="stylesheet">
+
+
+<section class="product_detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                {% include 'totembo/components/_product_slider.html' %}
+
+            </div>
+            {% include 'totembo/components/_product_detail.html' %}
+
+        </div>
+        {% if request.user.is_authenticated %}
+        <form id="rating-form" method="POST" action="{% url 'rate_product' product.id %}">
+            {% csrf_token %}
+            <div class="star-rating">
+                <h2>Ваша оценка на товар:
+                    {% if existing_rating %}
+                    {{ existing_rating.star }} звезды
+                    {% else %}
+                    Пока вы не оценили товар
+                    {% endif %}
+                </h2>
+                <span class="rating-text">
+            {% if existing_rating %}
+                Обновить оценку на товар:
+            {% else %}
+                Оцените товар:
+            {% endif %}
+        </span>
+                {% for star in "123456" %}
+                <span class="star{% if star == '6' %} hidden{% endif %}" data-value="{{ star }}"
+                      title="Оценка на {{ star }} звезды">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                 class="ipc-icon ipc-icon--star sc-40b53d-4 ejeafU" viewBox="0 0 24 24" fill="currentColor"
+                 role="presentation">
+                <path d="M12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72 3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19
+                8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+            </svg>
+        </span>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="rating" id="rating-value" value="{{ existing_rating.star|default:0 }}">
+            <div class="rating_button">
+                <button type="submit" class="rating_submit_button" {% if not existing_rating %}disabled{% endif %}
+                        id="submit-button">Отправить
+                </button>
+            </div>
+        </form>
+        {% endif %}
+
+        <style>
+            .star.hidden {
+                display: none;
+            }
+        </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const stars = document.querySelectorAll(".star-rating .star:not(.hidden)");
+                const ratingInput = document.getElementById("rating-value");
+                const submitButton = document.getElementById("submit-button");
+
+                let currentRating = parseInt(ratingInput.value || 0, 10);
+
+                if (currentRating > 0) {
+                    highlightStars(currentRating);
+                    markSelected(currentRating);
+                    submitButton.disabled = false;
+                }
+
+                stars.forEach((star) => {
+                    star.addEventListener("mouseover", () => {
+                        resetStars();
+                        highlightStars(star.dataset.value);
+                    });
+
+                    star.addEventListener("mouseout", () => {
+                        resetStars();
+                        if (currentRating > 0) {
+                            highlightStars(currentRating);
+                            markSelected(currentRating);
+                        }
+                    });
+
+                    star.addEventListener("click", () => {
+                        const ratingValue = parseInt(star.dataset.value, 10);
+                        currentRating = ratingValue > 5 ? 5 : ratingValue; // Cap rating at 5
+                        ratingInput.value = currentRating;
+                        submitButton.disabled = false;
+                        resetStars();
+                        highlightStars(currentRating);
+                        markSelected(currentRating);
+                    });
+                });
+
+                function resetStars() {
+                    stars.forEach((star) => star.classList.remove("hovered", "selected"));
+                }
+
+                function highlightStars(value) {
+                    stars.forEach((star) => {
+                        if (parseInt(star.dataset.value, 10) <= value) {
+                            star.classList.add("hovered");
+                        }
+                    });
+                }
+
+                function markSelected(value) {
+                    stars.forEach((star) => {
+                        if (parseInt(star.dataset.value, 10) <= value) {
+                            star.classList.add("selected");
+                        }
+                    });
+                }
+            });
+
+
+
+        </script>
+    </div>
+</section>
+
+
+<section class="brand_info ">
+    {% include 'totembo/components/_brand_info.html' %}
+
+</section>
+
+<div class="flex">
+    {% if comments %}
+    <div class="customer_reviews">
+        <h2 class="product_detail-main-title text-center">ОТЗЫВЫ КЛИЕНТОВ</h2>
+        <div class="customer_reviews-slider">
+
+            {% for comment in comments %}
+            <div class="customer_reviews-slider_block">
+                <h5 class="customer_reviews-title">{{ comment.user.username }}</h5>
+                <div class="d-flex justify-content-between">
+                    <small class="customer_reviews-status">Verified</small>
+                    <span class="customer_reviews-date">{{ comment.created_at }}</span>
+                </div>
+                <p class="customer_reviews-desc">{{ comment.text }}</p>
+                <!-- Action buttons for the comment author -->
+                {% if request.user == comment.user %}
+                <div class="comment_action">
+                    <a href="{% url 'comment_delete' comment.pk product.pk %}" class="delete_icon fs-5">
+                        <i class="icons bi bi-trash"></i>
+                    </a>
+                    <!-- Trigger for Modal -->
+                    <a href="#" class="edit_icon fs-5" data-comment="{{ comment.text }}"
+                       data-comment-id="{{ comment.pk }}">
+                        <i class="icons bi bi-pencil-square"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            {% else %}
+            {% if request.user.is_authenticated %}
+            <h3 class="text-center">Отзывов на этот товар пока нет. Будьте первым и оставьте ваш отзыв!</h3>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Modal for Editing Comments -->
+    {% include 'totembo/components/_modal.html' %}
+
+    <div class="comment_form">
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'comment' product.slug %}" method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+
+            <div class="comment_button">
+                <button type="submit">
+                    Оставить отзыв
+                </button>
+            </div>
+
+        </form>
+        {% else %}
+        <h4 class="to_login">
+            <a href="{% url 'login' %}" class="fs-5 fw-bold">Авторизуйтесь</a>
+            чтобы оставить комментарий
+        </h4>
+        {% endif %}
+    </div>
+</div>
+<div class="recommended_goods">
+    {% if products %}
+    <h2 class="product_detail-main-title text-center">You may also like</h2>
+
+    <!-- PRODUCTS BLOCK START -->
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+            {% include 'totembo/components/_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    <!-- PRODUCTS BLOCK END -->
+    {% endif %}
+</div>
+{% endblock main %}
+
+
+
+

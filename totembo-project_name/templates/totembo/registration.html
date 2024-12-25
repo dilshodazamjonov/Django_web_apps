@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+
+{% block main %}
+<div class="register_box_main" style="margin-top: 75px; margin-bottom: 75px;">
+    <div class="registration_div">
+        <div class="registration_main card border-light p-4">
+            <h4 class="auth_text text-center">{{ title }}</h4>
+            <form class="registration_form_class" action="" method="post">
+                {% csrf_token %}
+                {{ register_form.as_p }}
+                <div class="registration_btn_main">
+                    <button type="submit" class="submit_btn">
+                        Зарегистрироваться
+                    </button>
+                </div>
+            </form>
+            <div class="registration_box">
+                <span>Уже есть аккаунт?</span>
+                <a href="{% url 'login' %}" class="register">Войти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block email %}
+{% endblock email %}
+
+
+{% endblock main %}

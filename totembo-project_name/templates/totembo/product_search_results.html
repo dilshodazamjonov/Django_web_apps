@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+{% block main %}
+
+<main>
+    <h4 class="text-center mb-5">Результаты поиска на слово: "{{ title_body }}"{% if not products %} не найдены
+        {% else %}. Найдено всего результатов: {{ quantity }}{% endif %}</h4>
+    {% if products %}
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+            {% include 'totembo/components/_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-center">Пока посмотрите на товары со скидками</p>
+    {% include 'totembo/components/_sales_products.html' %}
+    {% endif %}
+</main>
+
+
+{% endblock main %}
+
+
+{% block email %}
+{% endblock email %}

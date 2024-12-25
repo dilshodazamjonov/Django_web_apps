@@ -1,0 +1,52 @@
+{% load static %}
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Изменение комментария</h2>
+        <form id="editCommentForm" method="POST" action="{% url 'comment_edit' %}">
+            {% csrf_token %}
+            <input type="hidden" name="comment_id" id="commentId">
+            <textarea name="comment_text" id="commentText" rows="5" cols="40"></textarea>
+            <button type="submit" class="btn btn-primary mt-2 save_btn">Сохранить изменение</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Get modal elements
+    const modal = document.getElementById('editModal');
+    const closeModalButton = document.querySelector('.close');
+    const commentTextArea = document.getElementById('commentText');
+    const commentIdInput = document.getElementById('commentId');
+
+    // Add event listener to edit icon
+    document.querySelectorAll('.edit_icon').forEach((editIcon) => {
+        editIcon.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent the default link behavior
+
+            // Retrieve comment data from the clicked icon
+            const commentText = editIcon.getAttribute('data-comment');
+            const commentId = editIcon.getAttribute('data-comment-id');
+
+            // Populate the modal with the comment data
+            commentTextArea.value = commentText;
+            commentIdInput.value = commentId;
+
+            // Show the modal
+            modal.style.display = 'block';
+        });
+    });
+
+    // Close modal when clicking the close button
+    closeModalButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+</script>

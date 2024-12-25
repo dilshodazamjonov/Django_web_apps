@@ -1,0 +1,29 @@
+{% if messages %}
+<div class="message_container">
+    <div class="d-flex justify-content-center">
+
+        <div class="messages">
+            {% for message in messages %}
+            <div role="alert"
+                 class="alert alert-{% if 'error' in message.tags %}danger{% else %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(() => {
+        const messageContainer = document.querySelector('.message_container');
+        if (messageContainer) {
+            messageContainer.style.transition = 'opacity 0.3s ease-out';
+            messageContainer.style.opacity = '0';
+            setTimeout(() => messageContainer.remove(), 300); // Remove after fade-out
+        }
+    }, 3000); // Apply after 3 seconds
+</script>
+
+
+{% endif %}
+

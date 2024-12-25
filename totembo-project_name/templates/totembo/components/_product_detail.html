@@ -1,0 +1,37 @@
+{% load static %}
+{% load totembo_tags %}
+<div class="col-md-6 product_detail">
+    <div class="product_detail-info">
+        <h2 class="product_detail-title">{{ product.title }}</h2>
+        <p class="product_detail-desc">{{ product.category }}</p>
+        <p class="product_detail-price">${% get_normal_price product.price %}</p>
+
+        <ul class="product_detail-characteristic">
+            <li class="product_detail-characteristic_item d-flex justify-content-between">
+                <span>Размер (мм)</span>
+                <span>{{ product.size }}</span>
+            </li>
+            <li class="product_detail-characteristic_item d-flex justify-content-between">
+                <span>Цвет</span>
+                <span>{{ product.color }}</span>
+            </li>
+            <li class="product_detail-characteristic_item d-flex justify-content-between">
+                <span>Модель товара</span>
+                <span>{{ product.model }} Edition</span>
+            </li>
+            <li class="product_detail-characteristic_item d-flex justify-content-between">
+                <span>Средний рейтинг:</span>
+                <span>{{ product.average_rating|floatformat:1 }} / 5</span>
+            </li>
+            <li>
+                <div class="detail_txt">Детали:</div>
+            </li>
+        </ul>
+        <p class="product_detail-guarantee">{{ product.description }}</p>
+    </div>
+    <div class="buy_btn">
+        <a href="{% url 'add_product' product.slug 'add' %}">
+            <button class="product_detail-buy_btn" type="submit">Добавить в корзину</button>
+        </a>
+    </div>
+</div>

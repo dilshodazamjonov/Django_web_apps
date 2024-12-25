@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load totembo_tags %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block poster %}
+
+{% endblock poster %}
+
+
+{% block main %}
+<div class="checkout__main">
+    <div class="checkout-container">
+        <div class="d-flex justify-content-center">
+            <h2>{{ title }}</h2>
+        </div>
+        <!-- Shipping Details -->
+        <div class="section shipping-details">
+            <form method="post" action="{% url 'payment' %}">
+                {% csrf_token %}
+                {{ shipping_form.as_p }}
+                <div class="checkout_button">
+                    <button type="submit" class="checkout-btn">Оплатить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="product_checkout col-lg-6">
+
+        <div class="profile__orders">
+            <h2 class="profile__title">Товары заказа</h2>
+
+            <table class="profile__table">
+                <tr>
+                    <td colspan="4">Товар</td>
+                    <td>Цена</td>
+                    <td>Количество</td>
+                    <td>На сумму</td>
+                </tr>
+
+                {% for item in items %}
+                <tr>
+                    <td colspan="4" class="profile__title-adaptive">
+                        <div class="tabel__item">
+                            <img src="{{ item.product.get_first_photo }}" alt="img">
+                            <span>{{ item.product.title }}</span>
+                        </div>
+                    </td>
+                    <td class="profile__tabel-data">{% get_normal_price item.product.price %}₽</td>
+                    <td class="profile__tabel-data">{{ item.quantity }}</td>
+                    <td class="profile__tabel-data">{% get_normal_price item.get_total_price %}₽</td>
+                </tr>
+                {% endfor %}
+
+
+                <!-- Не трогать - это заглушка для корректного отображения таблицы -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!-- Не трогать - это заглушка для корректного отображения таблицы -->
+            </table>
+            <p class="profile__orders-link">Сумма заказа: {% get_normal_price order.get_order_total_price %}₽</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock main %}
+
+{% block js %}
+<script>
+    const regionCities = {{ dict_city|safe }};
+
+const regionSelect = document.getElementById('id_region');
+const citySelect = document.getElementById('id_city');
+
+
+regionSelect.addEventListener('change', function() {
+  const selectedRegion = this.value;
+  updateCityOptions(selectedRegion);
+});
+
+
+function updateCityOptions(selectedRegion) {
+  citySelect.innerHTML = '<option value="" selected>---------</option>';
+  if (selectedRegion in regionCities) {
+    const cities = regionCities[selectedRegion];
+    cities.forEach(city => {
+      const option = document.createElement('option');
+      option.value = city[1];
+      option.text = city[0];
+      citySelect.add(option);
+    });
+  }
+}
+
+
+</script>
+{% endblock js %}
+
